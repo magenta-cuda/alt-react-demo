@@ -195,7 +195,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $option
         }
 
-        function chooserContainer(data) {
+        function chooserContainer(name, data, selected, ids) {
             const id = `chooser-${data.name}`
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
@@ -216,20 +216,17 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         function choosersContainer(data) {
             const id = "choosers"
             let $container = jQuery(`#${id}`)
-            if (!$container.length) {
+            const exists = $container.length > 0
+            if (!exists) {
                 $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: repeat(2, 1fr);border:2px solid black;" />`)
-                data.forEach(datum => {
-                    $container.append(chooserContainer(datum))
-                })
-            } else {
-                if (data === prevData.get(id)) {
-                    return null
-                }
-                prevData.set(id, data)
-                data.forEach(datum => {
-                    chooserContainer(datum)
-                })
             }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            const children = [
+                {element: chooserContainer, name: null, data: data, selected: null}
+            ]
+            doChildren($container, children)
             return $container
         }
         
@@ -258,7 +255,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $desc.length > 0
             if (!exists) {
                 $desc = jQuery(`
-<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab">
+<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab"
+        style="aspect-ratio: 3 / 1; color: red; font-size: 0.7rem; font-weight: bold;">
 The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
 </div>
 `)
@@ -352,7 +350,18 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                           {target: 'ddddd', title: 'ddd', content: 'DDDDDDD'},
                           {target: 'eeeee', title: 'eee', content: 'EEEEEEE'},
                           {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
-                selected: 'aaaaa'
+                selected: 'ddddd'
+            },
+            {
+                name: "gamma",
+                columns: 3,
+                items:   [{target: 'aaaaa', title: 'aaa', content: 'AAAAAAA'},
+                          {target: 'bbbbb', title: 'bbb', content: 'BBBBBBB'},
+                          {target: 'ccccc', title: 'ccc', content: 'CCCCCCC'},
+                          {target: 'ddddd', title: 'ddd', content: 'DDDDDDD'},
+                          {target: 'eeeee', title: 'eee', content: 'EEEEEEE'},
+                          {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
+                selected: 'fffff'
             }
         ]
         const prevData = new Map()
