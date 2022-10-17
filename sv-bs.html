@@ -297,12 +297,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
-        function selectorSelectorDescriptionContainer(data) {
+        function selectorSelectorDescriptionContainer(name, data, selected, ids) {
             const id = `selector-selector-description-${data.name}`
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="border: 3px solid blue; box-sizing: border-box;" />`)
+                if (Array.isArray(ids)) {
+                    ids.push(id)
+                }
             }
             let $item
             if ($item = selectorContainer(data)) {
@@ -325,12 +328,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 return null
             }
             prevData.set(id, data)
-            data.forEach(datum => {
-                const $item = selectorSelectorDescriptionContainer(datum)
-                if ($item) {
-                    $container.append($item)
-                }
-            })
+            const children = [
+                {element: selectorSelectorDescriptionContainer, name: null, data: data, selected: null}
+            ]
+            doChildren($container, children)
             return exists ? null : $container
         }
         function choosersSelectorsContainer(data) {
