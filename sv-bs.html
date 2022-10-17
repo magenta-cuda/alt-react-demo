@@ -253,6 +253,25 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         }
 
         function description(name, data, selected, ids) {
+            const id = `description-${name}-${data.target}`
+            if (Array.isArray(ids)) {
+                ids.push(id)
+            }
+            let $desc = jQuery(`#${id}`)
+            const exists = $desc.length > 0
+            if (!exists) {
+                $desc = jQuery(`
+<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab">
+The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
+</div>
+`)
+            }
+            if (data.target === selected) {
+                $desc.addClass(["active", "show"])
+            } else {
+                $desc.removeClass(["active", "show"])
+            }
+            return exists ? null : $desc
         }
 
         function selectorDescriptionContainer(data) {
