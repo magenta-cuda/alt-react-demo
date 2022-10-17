@@ -101,6 +101,10 @@ The content of ${data.content}.
 </ul>
 `)
             }
+            if (data === prevData.get(id)) {
+                return
+            }
+            prevData.set(id, data)
             const children = [
                 {element: navItem, name: data.name, data: data.items, selected: data.selected}
             ]
@@ -269,7 +273,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return $container
          }
         
-        const choosersData = [
+        let choosersData = [
             {
                 name: "alpha",
                 columns: 3,
@@ -293,6 +297,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 selected: 'aaaaa'
             }
         ]
+        const prevData = new Map()
         jQuery("#nav-root").append(choosersSelectorsContainer(choosersData))
         
         document.addEventListener("click", e => {console.log("click: ", e)}, true)
@@ -303,8 +308,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const tab = document.getElementById(e.target.dataset.target.substring(1))
             console.log("tab=", tab)
             // jQuery(`#selector-${keys[1]}`).val(`${keys[1]}-${keys[2]}`)
-            const item = choosersData.find(x => x.name === keys[1])
-            item.selected = keys[2]
+            choosersData = [...choosersData]
+            const i = choosersData.findIndex(x => x.name === keys[1])
+            choosersData[i] = {...choosersData[i], selected: keys[2]}
             choosersSelectorsContainer(choosersData)
         }, true)
         jQuery("button.nav-link").on("shown.bs.tab", e => {
@@ -317,8 +323,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const keys = jQuery(e.target).val().match(/(\w+)-(\w+)/)
             console.log("keys=", keys)
             // jQuery(`#pills-${keys[1]}-${keys[2]}-tab`).click()
-            const item = choosersData.find(x => x.name === keys[1])
-            item.selected = keys[2]
+            choosersData = [...choosersData]
+            const i = choosersData.findIndex(x => x.name === keys[1])
+            choosersData[i] = {...choosersData[i], selected: keys[2]}
             choosersSelectorsContainer(choosersData)
         })
     </script>
