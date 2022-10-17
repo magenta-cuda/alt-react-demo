@@ -201,6 +201,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="border:2px solid magenta;" />`)
+                if (Array.isArray(ids)) {
+                    ids.push(id)
+                }
             }
             if (data === prevData.get(id)) {
                 return null
@@ -292,27 +295,42 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             ]
             doChildren($container, children)
             return exists ? null : $container
-        }   
+        }
+
+        function selectorSelectorDescriptionContainer(data) {
+            const id = `selector-selector-description-${data.name}`
+            let $container = jQuery(`#${id}`)
+            const exists = $container.length > 0
+            if (!exists) {
+                $container = jQuery(`<div id="${id}" style="border: 3px solid blue; box-sizing: border-box;" />`)
+            }
+            let $item
+            if ($item = selectorContainer(data)) {
+                $container.append($item)
+            }
+            if ($item = selectorDescriptionContainer(data)) {
+                $container.append($item)
+            }
+            return exists ? null : $container
+        }
+
         function selectorsContainer(data) {
             const id = "selectors"
             let $container = jQuery(`${id}`)
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="border:2px solid black;" />`)
-                data.forEach(datum => {
-                    $container.append(selectorContainer(datum))
-                    $container.append(selectorDescriptionContainer(datum))
-                })
-            } else {
-                if (data === prevData.get(id)) {
-                    return null
-                }
-                prevData.set(id, data)
-                data.forEach(datum => {
-                    selectorContainer(datum)
-                    selectorDescriptionContainer(datum)
-                })
             }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            data.forEach(datum => {
+                const $item = selectorSelectorDescriptionContainer(datum)
+                if ($item) {
+                    $container.append($item)
+                }
+            })
             return exists ? null : $container
         }
         function choosersSelectorsContainer(data) {
