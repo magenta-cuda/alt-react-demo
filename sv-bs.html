@@ -96,8 +96,8 @@ The content of ${data.content}.
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`
-<ul class="nav nav-pills mb-3" id="" role="tablist"
-        style="display: grid; grid: auto-flow / repeat(${data.columns}, 1fr); width: 225px; border: 3px solid blue; box-sizing: border-box; overflow: hidden;">
+<ul class="nav nav-pills mb-3" id="${id}" role="tablist"
+        style="display: grid; grid: auto-flow / repeat(${data.columns}, 1fr); border: 3px solid blue; box-sizing: border-box; overflow: hidden;">
 </ul>
 `)
             }
@@ -226,6 +226,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if (data === prevData.get(id)) {
                 return null
             }
+            prevData.set(id, data)
             const children = [
                 {element: chooserContainer, name: null, data: data, selected: null}
             ]
