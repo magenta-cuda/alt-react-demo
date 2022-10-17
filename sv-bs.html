@@ -102,7 +102,7 @@ The content of ${data.content}.
 `)
             }
             if (data === prevData.get(id)) {
-                return
+                return null
             }
             prevData.set(id, data)
             const children = [
@@ -152,7 +152,7 @@ The content of ${data.content}.
 `)
             }
             if (data === prevData.get(id)) {
-                return
+                return null
             }
             prevData.set(id, data)
             const children = [
@@ -200,14 +200,19 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         function chooserContainer(data) {
             const id = `chooser-${data.name}`
             let $container = jQuery(`#${id}`)
-            if (!$container.length) {
+            const exists = $container.length > 0
+            if (!exists) {
                 $container = jQuery(`<div id="${id}" style="border:2px solid magenta;" />`)
                 $container.append(tabContainer(data)).append(navContainer(data))
             } else {
+                if (data === prevData.get(id)) {
+                    return null
+                }
+                prevData.set(id, data)
                 tabContainer(data)
                 navContainer(data)
             }
-            return $container
+            return exists ? null : $container
         }
 
         function choosersContainer(data) {
@@ -219,6 +224,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     $container.append(chooserContainer(datum))
                 })
             } else {
+                if (data === prevData.get(id)) {
+                    return null
+                }
+                prevData.set(id, data)
                 data.forEach(datum => {
                     chooserContainer(datum)
                 })
@@ -238,7 +247,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 doChildren($container, children)
             }
             if (data === prevData.get(id)) {
-                return
+                return null
             }
             prevData.set(id, data)
             $container.val(`${data.name}-${data.selected}`)
@@ -261,6 +270,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     $container.append(selectorContentContainer(datum))
                 })
             } else {
+                if (data === prevData.get(id)) {
+                    return null
+                }
+                prevData.set(id, data)
                 data.forEach(datum => {
                     selectorContainer(datum)
                     selectorContentContainer(datum)
@@ -271,14 +284,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         function choosersSelectorsContainer(data) {
             const id = "choosers-selectors"
             let $container = jQuery(`#${id}`)
-            if (!$container.length) {
+            const exists = $container.length > 0
+            if (!exists) {
                 $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 1fr 1fr 2fr ;border:2px solid cyan;" />`)
                 $container.append(choosersContainer(data)).append(selectorsContainer(data))
             } else {
                 choosersContainer(data)
                 selectorsContainer(data)
             }
-            return $container
+            return exists ? null : $container
          }
         
         let choosersData = [
