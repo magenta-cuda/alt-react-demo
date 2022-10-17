@@ -162,9 +162,6 @@ The content of ${data.content}.
     
         function tab(name, data, selected, ids) {
             const id = `pills-${name}-${data.target}`
-            if (Array.isArray(ids)) {
-                ids.push(id)
-            }
             let $tab = jQuery(`#${id}`)
             const exists = $tab.length > 0
             if (!exists) {
@@ -173,6 +170,9 @@ The content of ${data.content}.
 The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
 </div>
 `)
+                if (Array.isArray(ids)) {
+                    ids.push(id)
+                }
             }
             if (data.target === selected) {
                 $tab.addClass(["active", "show"])
@@ -184,13 +184,13 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         
         function option(name, data, selected, ids) {
             const id = `${name}-${data.target}`
-            if (Array.isArray(ids)) {
-                ids.push(id)
-            }
             let $option = jQuery(`#${id}`)
             const exists = $option.length > 0
             if (!exists) {
                 $option = jQuery(`<option value="${id}">${name}:${data.title}</option>`)
+                if (Array.isArray(ids)) {
+                    ids.push(id)
+                }
             }
             return exists ? null : $option
         }
@@ -254,9 +254,6 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 
         function description(name, data, selected, ids) {
             const id = `description-${name}-${data.target}`
-            if (Array.isArray(ids)) {
-                ids.push(id)
-            }
             let $desc = jQuery(`#${id}`)
             const exists = $desc.length > 0
             if (!exists) {
@@ -265,6 +262,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
 </div>
 `)
+                if (Array.isArray(ids)) {
+                    ids.push(id)
+                }
             }
             if (data.target === selected) {
                 $desc.addClass(["active", "show"])
