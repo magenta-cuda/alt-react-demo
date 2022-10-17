@@ -201,14 +201,17 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="border:2px solid magenta;" />`)
-                $container.append(tabContainer(data)).append(navContainer(data))
-            } else {
-                if (data === prevData.get(id)) {
-                    return null
-                }
-                prevData.set(id, data)
-                tabContainer(data)
-                navContainer(data)
+            }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            let item
+            if (item = tabContainer(data)) {
+                $container.append(item)
+            }
+            if (item = navContainer(data)) {
+                $container.append(item)
             }
             return exists ? null : $container
         }
@@ -227,7 +230,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 {element: chooserContainer, name: null, data: data, selected: null}
             ]
             doChildren($container, children)
-            return $container
+            return exists ? null : $container
         }
         
         function selectorContainer(data) {
