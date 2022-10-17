@@ -151,6 +151,10 @@ The content of ${data.content}.
 <div class="tab-content" id="${id}" style="width: 225px; height:225px; border: 3px solid green; box-sizing: border-box;" />
 `)
             }
+            if (data === prevData.get(id)) {
+                return
+            }
+            prevData.set(id, data)
             const children = [
                 {element: tab, name: data.name, data: data.items, selected: data.selected}
             ]
@@ -233,6 +237,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 ]
                 doChildren($container, children)
             }
+            if (data === prevData.get(id)) {
+                return
+            }
+            prevData.set(id, data)
             $container.val(`${data.name}-${data.selected}`)
             return exists ? null : $container
         }
