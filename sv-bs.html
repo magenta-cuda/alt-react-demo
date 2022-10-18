@@ -382,6 +382,12 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 selected: 'fffff'
             }
         ]
+
+        const product = {
+            id: 0,
+            components: []
+        }
+
         const prevData = new Map()
         jQuery("#nav-root").append(choosersSelectorsContainer(choosersData))
         
@@ -422,6 +428,13 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 console.log("response=", response)
                 const json = await response.json()
                 console.log("json=", json)
+                const variations = []
+                for (const id in json) {
+                    variations.push(json[id])
+                }
+                product.id = productId
+                product.components = variations
+                console.log("product=", product)
             }
         }
         const query = new URLSearchParams(window.location.search)
