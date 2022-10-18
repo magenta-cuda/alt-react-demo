@@ -97,7 +97,7 @@ The content of ${data.content}.
             if (!exists) {
                 $container = jQuery(`
 <ul class="nav nav-pills mb-3" id="${id}" role="tablist"
-        style="display: grid; grid: auto-flow / repeat(${data.columns}, 1fr); border: 3px solid blue; box-sizing: border-box; overflow: hidden;">
+        style="display: grid; grid: auto-flow / repeat(${data.columns}, ${100/data.columns}%); border: 3px solid blue; box-sizing: border-box; overflow: hidden;">
 </ul>
 `)
             }
@@ -224,7 +224,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: repeat(2, 1fr);border:2px solid black;" />`)
+                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;border:2px solid black;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
@@ -284,7 +284,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div class="tab-content" id="${id}" style="border: 3px solid blue; box-sizing: border-box;" />`)
+                $container = jQuery(`<div class="tab-content" id="${id}" style="border: 1px solid cyan; box-sizing: border-box;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
@@ -302,7 +302,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="border: 3px solid blue; box-sizing: border-box;" />`)
+                $container = jQuery(`<div id="${id}" style="border: 2px solid blue; box-sizing: border-box;" />`)
                 if (Array.isArray(ids)) {
                     ids.push(id)
                 }
@@ -339,7 +339,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 1fr 1fr 2fr ;border:2px solid cyan;" />`)
+                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 25% 25% 50%; border:2px solid cyan;" />`)
                 $container.append(choosersContainer(data)).append(selectorsContainer(data))
             } else {
                 if (data === prevData.get(id)) {
@@ -368,12 +368,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 name: "beta",
                 columns: 3,
                 items:   [{target: 'aaaaa', title: 'aaa', content: 'AAAAAAA'},
-                          {target: 'bbbbb', title: 'bbb', content: 'BBBBBBB'},
                           {target: 'ccccc', title: 'ccc', content: 'CCCCCCC'},
-                          {target: 'ddddd', title: 'ddd', content: 'DDDDDDD'},
-                          {target: 'eeeee', title: 'eee', content: 'EEEEEEE'},
                           {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
-                selected: 'ddddd'
+                selected: 'ccccc'
             },
             {
                 name: "gamma",
@@ -381,8 +378,6 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 items:   [{target: 'aaaaa', title: 'aaa', content: 'AAAAAAA'},
                           {target: 'bbbbb', title: 'bbb', content: 'BBBBBBB'},
                           {target: 'ccccc', title: 'ccc', content: 'CCCCCCC'},
-                          {target: 'ddddd', title: 'ddd', content: 'DDDDDDD'},
-                          {target: 'eeeee', title: 'eee', content: 'EEEEEEE'},
                           {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
                 selected: 'fffff'
             }
