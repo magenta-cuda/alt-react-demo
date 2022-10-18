@@ -385,7 +385,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 
         const product = {
             id: 0,
-            components: []
+            attributes: []
         }
 
         const prevData = new Map()
@@ -428,13 +428,21 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 console.log("response=", response)
                 const json = await response.json()
                 console.log("json=", json)
-                const variations = []
+                const attributes = []
                 for (const id in json) {
-                    variations.push(json[id])
+                    const variation = json[id]
+                    const attributeName = variation.attribute
+                    let attribute = attributes.find(x => x.name === attributeName)
+                    if (!attribute) {
+                        attribute = {name: attributeName, items: []}
+                        attributes.push(attribute)
+                    }
+                    attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
                 }
                 product.id = productId
-                product.components = variations
+                product.attributes = attributes
                 console.log("product=", product)
+                // choosersSelectorsContainer(product.attributes)
             }
         }
         const query = new URLSearchParams(window.location.search)
