@@ -83,6 +83,7 @@ The content of ${data.content}.
                 x.data.forEach(y => {
                     $elem = x.element(x.name, y, x.selected, ids)
                     if ($elem) {
+                        console.log("doChildren():ids=", ids)
                         $parent.append($elem)
                     }
                 })
@@ -184,6 +185,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         
         function option(name, data, selected, ids) {
             const id = `${name}-${data.target}`
+            console.log("option():id=", id)
             let $option = jQuery(`#${id}`)
             const exists = $option.length > 0
             if (!exists) {
@@ -243,21 +245,22 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<select id="${id}" class="form-select" aria-label="Default select example" />`)
-                const children = [
-                    {element: option, name: data.name, data: data.items, selected: data.selected}
-                ]
-                doChildren($container, children)
             }
             if (data === prevData.get(id)) {
                 return null
             }
             prevData.set(id, data)
+            const children = [
+                {element: option, name: data.name, data: data.items, selected: data.selected}
+            ]
+            doChildren($container, children)
             $container.val(`${data.name}-${data.selected}`)
             return exists ? null : $container
         }
 
         function description(name, data, selected, ids) {
             const id = `description-${name}-${data.target}`
+            console.log("description():id=", id)
             let $desc = jQuery(`#${id}`)
             const exists = $desc.length > 0
             if (!exists) {
@@ -281,6 +284,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 
         function selectorDescriptionContainer(data) {
             const id = `selector-description-${data.name}`
+            console.log("selectorDescriptionContainer():id=", id)
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
@@ -294,11 +298,13 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 {element: description, name: data.name, data: data.items, selected: data.selected}
             ]
             doChildren($container, children)
+            console.log("selectorDescriptionContainer():exists=", exists)
             return exists ? null : $container
         }
 
         function selectorSelectorDescriptionContainer(name, data, selected, ids) {
             const id = `selector-selector-description-${data.name}`
+            console.log("selectorSelectorDescriptionContainer():id=", id)
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
@@ -314,12 +320,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if ($item = selectorDescriptionContainer(data)) {
                 $container.append($item)
             }
+            console.log("selectorSelectorDescriptionContainer():id=", id)
+            console.log("selectorSelectorDescriptionContainer():exists=", exists)
             return exists ? null : $container
         }
 
         function selectorsContainer(data) {
             const id = "selectors"
-            let $container = jQuery(`${id}`)
+            console.log("selectorsContainer():id=", id)
+            let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="border:2px solid black;" />`)
@@ -332,6 +341,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 {element: selectorSelectorDescriptionContainer, name: null, data: data, selected: null}
             ]
             doChildren($container, children)
+            // console.log("selectorsContainer():$container=", $container)
             return exists ? null : $container
         }
         function choosersSelectorsContainer(data) {
@@ -442,7 +452,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 product.id = productId
                 product.attributes = attributes
                 console.log("product=", product)
-                // choosersSelectorsContainer(product.attributes)
+                choosersSelectorsContainer(product.attributes)
             }
         }
         const query = new URLSearchParams(window.location.search)
