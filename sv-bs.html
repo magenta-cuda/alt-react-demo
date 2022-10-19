@@ -221,8 +221,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
-        function choosersContainer(data) {
-            const id = "choosers"
+        function choosersContainer(data, productId = "") {
+            const id = `choosers${productId ? "-" + productId : ""}`
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
@@ -325,8 +325,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
-        function selectorsContainer(data) {
-            const id = "selectors"
+        function selectorsContainer(data, productId = "") {
+            const id = `selectors${productId ? "-" + productId : ""}`
             console.log("selectorsContainer():id=", id)
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
@@ -344,20 +344,21 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             // console.log("selectorsContainer():$container=", $container)
             return exists ? null : $container
         }
-        function choosersSelectorsContainer(data) {
-            const id = "choosers-selectors"
+
+        function choosersSelectorsContainer(data, productId = "") {
+            const id = `choosers-selectors${productId ? "-" + productId : ""}`
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 25% 25% 50%; border:2px solid cyan;" />`)
-                $container.append(choosersContainer(data)).append(selectorsContainer(data))
+                $container.append(choosersContainer(data, productId)).append(selectorsContainer(data, productId))
             } else {
                 if (data === prevData.get(id)) {
                     return null
                 }
                 prevData.set(id, data)
-                choosersContainer(data)
-                selectorsContainer(data)
+                choosersContainer(data, productId)
+                selectorsContainer(data, productId)
             }
             return exists ? null : $container
          }
@@ -444,7 +445,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     const attributeName = variation.attribute
                     let attribute = attributes.find(x => x.name === attributeName)
                     if (!attribute) {
-                        attribute = {name: attributeName, items: []}
+                        attribute = {name: attributeName, items: [], selected: variation.id}
                         attributes.push(attribute)
                     }
                     attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
@@ -452,7 +453,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 product.id = productId
                 product.attributes = attributes
                 console.log("product=", product)
-                choosersSelectorsContainer(product.attributes)
+                jQuery("#nav-root").append(choosersSelectorsContainer(product.attributes, productId))
             }
         }
         const query = new URLSearchParams(window.location.search)
