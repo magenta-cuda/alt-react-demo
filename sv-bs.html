@@ -186,7 +186,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         function option(name, data, selected, ids) {
             const id = `${name}-${data.target}`
             console.log("option():id=", id)
-            let $option = jQuery(`#${id}`)
+            let $option = jQuery(`option[value=${id}]`)
             const exists = $option.length > 0
             if (!exists) {
                 $option = jQuery(`<option value="${id}">${name}:${data.title}</option>`)
