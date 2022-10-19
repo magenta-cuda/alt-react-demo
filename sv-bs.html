@@ -351,14 +351,17 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 25% 25% 50%; border:2px solid cyan;" />`)
-                $container.append(choosersContainer(data, productId)).append(selectorsContainer(data, productId))
-            } else {
-                if (data === prevData.get(id)) {
-                    return null
-                }
-                prevData.set(id, data)
-                choosersContainer(data, productId)
-                selectorsContainer(data, productId)
+            }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            let item
+            if (item = choosersContainer(data, productId)) {
+                $container.append(item)
+            }
+            if (item = selectorsContainer(data, productId)) {
+                $container.append(item)
             }
             return exists ? null : $container
          }
@@ -453,7 +456,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 product.id = productId
                 product.attributes = attributes
                 console.log("product=", product)
-                jQuery("#nav-root").append(choosersSelectorsContainer(product.attributes, productId))
+                const $container = choosersSelectorsContainer(product.attributes, productId)
+                if ($container) {
+                    jQuery("#nav-root").append($container)
+                }
             }
         }
         const query = new URLSearchParams(window.location.search)
