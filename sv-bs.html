@@ -448,6 +448,18 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 product.attributes = attributes
                 choosersSelectorsContainer(product.attributes, product.id)
             })
+            $container.on("change", "select.form-select", e => {
+                console.log("select.form-select:e=", e)
+                const targetVal = jQuery(e.target).val()
+                console.log("select.form-select:targetVal=", targetVal)
+                const keys = jQuery(e.target).val().match(/(\w+)-(\w+)/)
+                console.log("keys=", keys)
+                const attributes = [...product.attributes]
+                const i = attributes.findIndex(x => x.name === keys[1])
+                attributes[i] = {...attributes[i], selected: keys[2]}
+                product.attributes = attributes
+                choosersSelectorsContainer(product.attributes, product.id)
+            })
         }
 
         async function loadVariations(productId) {
