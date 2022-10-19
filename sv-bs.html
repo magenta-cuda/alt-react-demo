@@ -417,7 +417,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const i = choosersData.findIndex(x => x.name === keys[1])
             choosersData[i] = {...choosersData[i], selected: keys[2]}
             choosersSelectorsContainer(choosersData)
-        }, true)
+        })
         jQuery("button.nav-link").on("shown.bs.tab", e => {
             console.log("jQuery::shown.bs.tab:e=", e)            
         })
@@ -433,6 +433,23 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             choosersData[i] = {...choosersData[i], selected: keys[2]}
             choosersSelectorsContainer(choosersData)
         })
+
+        function addEventListeners($container) {
+            $container.on("shown.bs.tab", e => {
+                console.log("document::shown.bs.tab:e=", e)
+                const keys = e.target.dataset.target.match(/#pills-(\w+)-(\w+)/)
+                console.log("keys=", keys)
+                const tab = document.getElementById(e.target.dataset.target.substring(1))
+                console.log("tab=", tab)
+                // jQuery(`#selector-${keys[1]}`).val(`${keys[1]}-${keys[2]}`)
+                const attributes = [...product.attributes]
+                const i = attributes.findIndex(x => x.name === keys[1])
+                attributes[i] = {...attributes[i], selected: keys[2]}
+                product.attributes = attributes
+                choosersSelectorsContainer(product.attributes, product.id)
+            })
+        }
+
         async function loadVariations(productId) {
             const base = window.location.origin
             const loadVariations = base + '/?wc-ajax=sv_load_variations_json'
@@ -459,6 +476,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 const $container = choosersSelectorsContainer(product.attributes, productId)
                 if ($container) {
                     jQuery("#nav-root").append($container)
+                    addEventListeners($container)
                 }
             }
         }
