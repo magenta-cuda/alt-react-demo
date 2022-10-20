@@ -121,14 +121,25 @@ The content of ${data.content}.
             let $item = jQuery(`#${id}`)
             const exists = $item.length > 0
             if (!exists) {
-                $item = jQuery(`
-<li class="nav-item" role="presentation">
+                if (data.hasOwnProperty("thumbnail")) {
+                    $item = jQuery(
+`<li class="nav-item" role="presentation">
+    <button class="nav-link" id="${id}" data-bs-toggle="pill" data-target="#pills-${name}-${data.target}"
+            type="button" role="tab" aria-controls="pills-${name}-${data.target}" aria-selected="false">
+        <img src="${data.thumbnail}" style="width: 100%; height: auto; aspect-ratio: 1 / 1;">
+    </button>
+</li>`
+                    )
+                } else {
+                    $item = jQuery(
+`<li class="nav-item" role="presentation">
     <button class="nav-link" id="${id}" data-bs-toggle="pill" data-target="#pills-${name}-${data.target}"
             type="button" role="tab" aria-controls="pills-${name}-${data.target}" aria-selected="false">
         ${data.title}
     </button>
-</li>
-`)
+</li>`
+                    )
+                }
             } else {
                 $item = $item.parent()
             }
@@ -485,7 +496,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     const attributeName = variation.attribute
                     let attribute = attributes.find(x => x.name === attributeName)
                     if (!attribute) {
-                        attribute = {name: attributeName, items: [], selected: variation.id}
+                        attribute = {name: attributeName, items: [], selected: variation.id, columns: 3}
                         attributes.push(attribute)
                     }
                     attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
