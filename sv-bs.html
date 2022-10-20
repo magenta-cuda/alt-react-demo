@@ -283,12 +283,21 @@ The content of ${data.content}.
             let $desc = jQuery(`#${id}`)
             const exists = $desc.length > 0
             if (!exists) {
-                $desc = jQuery(`
-<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab"
+                if (data.hasOwnProperty("description")) {
+                    $desc = jQuery(
+`<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab"
+        style="aspect-ratio: 3 / 1; color: #5f5f5f; font-size: 0.9rem; font-weight: bold;">
+${data.description}
+</div>`
+                    )
+                } else {
+                    $desc = jQuery(
+`<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab"
         style="aspect-ratio: 3 / 1; color: red; font-size: 0.7rem; font-weight: bold;">
 The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
-</div>
-`)
+</div>`
+                    )
+                }
                 if (Array.isArray(ids)) {
                     ids.push(id)
                 }
