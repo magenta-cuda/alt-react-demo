@@ -125,7 +125,7 @@ The content of ${data.content}.
                     $item = jQuery(
 `<li class="nav-item" role="presentation">
     <button class="nav-link" id="${id}" data-bs-toggle="pill" data-target="#pills-${name}-${data.target}"
-            type="button" role="tab" aria-controls="pills-${name}-${data.target}" aria-selected="false">
+            type="button" role="tab" aria-controls="pills-${name}-${data.target}" aria-selected="false" style="padding:0;">
         <img src="${data.thumbnail}" style="width: 100%; height: auto; aspect-ratio: 1 / 1;">
     </button>
 </li>`
@@ -270,7 +270,7 @@ The content of ${data.content}.
                 $container = jQuery(
 `<div>
     <div>${data.name.replace("attribute_", "").replace("_mc_xii_optional", "").toUpperCase()}</div>
-    <select id="${id}" class="form-select" aria-label="Default select example" />
+    <select id="${id}" class="form-select" aria-label="Default select example" style="background-color: #cccccc;" />
 </div>`
 )
             }
@@ -296,7 +296,8 @@ The content of ${data.content}.
                     $desc = jQuery(
 `<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab"
         style="aspect-ratio: 3 / 1; color: #5f5f5f; font-size: 0.9rem; font-weight: bold;">
-${data.description}
+<div style="margin: 0.5rem;">${data.description.replace(/^\w+:\s*/, "")}</div>
+<div style="text-align: center; font-size: 1.1rem; margin-top: 0.5rem;">Price: $${data.price}</div>
 </div>`
                     )
                 } else {
