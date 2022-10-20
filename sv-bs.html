@@ -208,7 +208,11 @@ The content of ${data.content}.
             let $option = jQuery(`option[value=${id}]`)
             const exists = $option.length > 0
             if (!exists) {
-                $option = jQuery(`<option value="${id}">${name}:${data.title}</option>`)
+                if (data.hasOwnProperty("selection")) {
+                    $option = jQuery(`<option value="${id}">${data.selection}</option>`)
+                } else {
+                    $option = jQuery(`<option value="${id}">${name}:${data.title}</option>`)
+                }
                 if (Array.isArray(ids)) {
                     ids.push(id)
                 }
@@ -263,7 +267,12 @@ The content of ${data.content}.
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<select id="${id}" class="form-select" aria-label="Default select example" />`)
+                $container = jQuery(
+`<div>
+    <div>${data.name.replace("attribute_", "").replace("_mc_xii_optional", "").toUpperCase()}</div>
+    <select id="${id}" class="form-select" aria-label="Default select example" />
+</div>`
+)
             }
             if (data === prevData.get(id)) {
                 return null
@@ -272,7 +281,7 @@ The content of ${data.content}.
             const children = [
                 {element: option, name: data.name, data: data.items, selected: data.selected}
             ]
-            doChildren($container, children)
+            doChildren($container.find("select"), children)
             $container.val(`${data.name}-${data.selected}`)
             return exists ? null : $container
         }
