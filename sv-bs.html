@@ -166,11 +166,19 @@ The content of ${data.content}.
             let $tab = jQuery(`#${id}`)
             const exists = $tab.length > 0
             if (!exists) {
-                $tab = jQuery(`
-<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="pills-${name}-${data.target}-tab">
-The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
-</div>
-`)
+                if (data.hasOwnProperty("full_size_image")) {
+                    $tab = jQuery(
+`<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="pills-${name}-${data.target}-tab">
+    <img src="${data.full_size_image}">
+</div>`
+                    )
+                } else {
+                    $tab = jQuery(
+`<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="pills-${name}-${data.target}-tab">
+    The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.content}".
+</div>`
+                    )
+                }
                 if (Array.isArray(ids)) {
                     ids.push(id)
                 }
