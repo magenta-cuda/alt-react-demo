@@ -169,7 +169,7 @@ The content of ${data.content}.
                 if (data.hasOwnProperty("full_size_image")) {
                     $tab = jQuery(
 `<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="pills-${name}-${data.target}-tab">
-    <img src="${data.full_size_image}">
+    <img src="${data.full_size_image}" style="width: 100%; height: auto; aspect-ratio: 1 / 1;">
 </div>`
                     )
                 } else {
