@@ -225,7 +225,11 @@ The content of ${data.content}.
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="display: block; border: 3px solid blue;" />`)
+                $container = jQuery(
+`<div id="${id}" style="display: block; border: 3px solid blue;">
+    <div class="tab-nav-container" style="display: block; border: 3px solid black;"/>
+</div>`
+                )
                 if (Array.isArray(ids)) {
                     ids.push(id)
                 }
@@ -236,10 +240,10 @@ The content of ${data.content}.
             prevData.set(id, data)
             let $item
             if ($item = tabContainer(data)) {
-                $container.append($item)
+                $container.find("div.tab-nav-container").append($item)
             }
             if ($item = navContainer(data)) {
-                $container.append($item)
+                $container.find("div.tab-nav-container").append($item)
             }
             return exists ? null : $container
         }
