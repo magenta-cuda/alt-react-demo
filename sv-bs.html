@@ -234,12 +234,12 @@ The content of ${data.content}.
                 return null
             }
             prevData.set(id, data)
-            let item
-            if (item = tabContainer(data)) {
-                $container.append(item)
+            let $item
+            if ($item = tabContainer(data)) {
+                $container.append($item)
             }
-            if (item = navContainer(data)) {
-                $container.append(item)
+            if ($item = navContainer(data)) {
+                $container.append($item)
             }
             return exists ? null : $container
         }
@@ -363,6 +363,22 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
+        function productTotal(data, productId = "") {
+            const id = `product-total${productId ? "-" + productId : ""}`
+            let $container = jQuery(`#${id}`)
+            const exists = $container.length > 0
+            if (!exists) {
+                $container = jQuery(
+`<div id="${id}" style="border: 2px solid blue; box-sizing: border-box;">
+    <hr>
+    <div style="font-size: 1.2rem; font-weight: bold; text-align: center;">Total: <span>$0.00</span></div>
+    <hr>
+</div>`
+                )
+            }
+            return exists ? null : $container
+        }
+
         function selectorsContainer(data, productId = "") {
             const id = `selectors${productId ? "-" + productId : ""}`
             console.log("selectorsContainer():id=", id)
@@ -380,6 +396,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             ]
             doChildren($container, children)
             // console.log("selectorsContainer():$container=", $container)
+            const $item = productTotal(data, productId)
+            if ($item) {
+                $container.append($item)
+            }
             return exists ? null : $container
         }
 
