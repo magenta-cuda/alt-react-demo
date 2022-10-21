@@ -377,11 +377,25 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container = jQuery(
 `<div id="${id}" style="border: 2px solid blue; box-sizing: border-box;">
     <hr>
-    <div style="font-size: 1.2rem; font-weight: bold; text-align: center;">Total: <span>$0.00</span></div>
+    <div style="font-size: 1.2rem; font-weight: bold; text-align: center;">Total: $<span>0.00</span></div>
     <hr>
 </div>`
                 )
             }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            let total = 0.0
+            data.forEach(attribute => {
+            if (attribute.hasOwnProperty("selected")) {
+                    const item = attribute.items.find(item => item.id === attribute.selected)
+                    if (item && item.hasOwnProperty("price")) {
+                        total += Number(item.price)
+                    }
+                }
+                $container.find("span").text(total.toFixed(2))
+            })
             return exists ? null : $container
         }
 
