@@ -253,7 +253,9 @@ The content of ${data.content}.
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;border:2px solid black;" />`)
+                $container = jQuery(
+`<div id="${id}" style="display: grid; grid-template-columns: 50% 50%; grid-auto-rows: min-content; border:3px solid magenta;" />`
+                )
             }
             if (data === prevData.get(id)) {
                 return null
