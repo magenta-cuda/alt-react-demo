@@ -96,11 +96,11 @@ The content of ${data.content}.
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`
-<ul class="nav nav-pills mb-3" id="${id}" role="tablist"
-        style="display: grid; grid: auto-flow / repeat(${data.columns}, ${100/data.columns}%); border: 3px solid blue; box-sizing: border-box; overflow: hidden;">
-</ul>
-`)
+                $container = jQuery(
+`<div id="${id}" style="display: block; box-sizing: border-box; overflow: hidden; border: 3px solid green;">
+    <ul class="nav nav-pills" role="tablist" style="display: grid; grid-template-columns: repeat(${data.columns}, ${100/data.columns}%);" \>
+</div>`
+                )
             }
             if (data === prevData.get(id)) {
                 return null
@@ -109,7 +109,7 @@ The content of ${data.content}.
             const children = [
                 {element: navItem, name: data.name, data: data.items, selected: data.selected}
             ]
-            doChildren($container, children)
+            doChildren($container.find("ul"), children)
             return exists ? null : $container            
         }
 
@@ -159,7 +159,7 @@ The content of ${data.content}.
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div class="tab-content" id="${id}" style="aspect-ratio: 1 / 1; border: 3px solid green; box-sizing: border-box;" />`)
+                $container = jQuery(`<div class="tab-content" id="${id}" style="border: 3px solid red; box-sizing: border-box;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
@@ -225,7 +225,7 @@ The content of ${data.content}.
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="border:2px solid magenta;" />`)
+                $container = jQuery(`<div id="${id}" style="display: block; border: 3px solid blue;" />`)
                 if (Array.isArray(ids)) {
                     ids.push(id)
                 }
