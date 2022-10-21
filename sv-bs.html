@@ -553,6 +553,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         async function loadVariations(productId) {
             const base = window.location.origin
             const loadVariations = base + '/?wc-ajax=sv_load_variations_json'
+            const chooseImage = base + '/wp-content/uploads/2021/03/choose-100x100.png'
+            const chooseFullsize = base + '/wp-content/uploads/2021/03/choose.png'
             const url = `${loadVariations}&product_id=${productId}`
             const response = await fetch(url)
             if (response.ok) {
@@ -565,8 +567,13 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     const attributeName = variation.attribute
                     let attribute = attributes.find(x => x.name === attributeName)
                     if (!attribute) {
-                        attribute = {name: attributeName, items: [], selected: variation.id, columns: 3}
+                        const chooseId = `choose-${attributeName}`
+                        const chooseSelection = `Choose ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
+                        attribute = {name: attributeName, items: [], selected: chooseId, columns: 3}
                         attributes.push(attribute)
+                        attribute.items.push({id: chooseId, selection: chooseSelection, thumbnail: chooseImage, price: 0,
+                                              quantity: Number.MAX_SAFE_INTEGER, description: "", full_size_image: chooseFullsize,
+                                              target: chooseId, title: chooseSelection, content: ""})
                     }
                     attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
                 }
