@@ -391,6 +391,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             prevData.set(id, data)
             let total = 0.0
             let stock = Number.MAX_SAFE_INTEGER
+            let bodyDone = 0
+            const body = new FormData()
             data.forEach(attribute => {
                 if (attribute.hasOwnProperty("selected")) {
                     const item = attribute.items.find(item => item.id === attribute.selected)
@@ -401,9 +403,26 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                         if (item.hasOwnProperty("quantity")) {
                             stock = Math.min(stock, item.quantity)
                         }
+                        let selection = item.selection
+                        if (selection !== `Choose ${item.attribute.replace('attribute_', '').replace('_mc_xii_optional', '')}`) {
+                            if (item.attribute.endsWith('_mc_xii_optional')) {
+                                if (selection === `No ${item.attribute.replace('attribute_', '').replace('_mc_xii_optional', '')}`) {
+                                    selection = 'mc_xii_not_selected'
+                                }
+                            }
+                            body.append(item.attribute, selection)
+                            ++bodyDone
+                        }
                     }
                 }
             })
+            if (bodyDone === data.length) {
+                body.append('product_id', productId)
+                console.log("productTotal():body=")
+                for (const pair of body.entries()) {
+                    console.log(`    ${pair[0]} -> ${pair[1]}`)
+                }
+            }
             $container.find("span.product-price").text(total.toFixed(2))
             $container.find("span.product-stock").text(stock)
             return exists ? null : $container
@@ -573,15 +592,16 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                         const chooseSelection = `Choose ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
                         attribute = {name: attributeName, items: [], selected: chooseId, columns: 3}
                         attributes.push(attribute)
-                        attribute.items.push({id: chooseId, selection: chooseSelection, thumbnail: chooseImage, price: 0,
-                                              quantity: Number.MAX_SAFE_INTEGER, description: "", full_size_image: chooseFullsize,
-                                              target: chooseId, title: chooseSelection, content: ""})
+                        attribute.items.push({attribute: attributeName, id: chooseId, selection: chooseSelection,
+                                              thumbnail: chooseImage, price: 0, quantity: Number.MAX_SAFE_INTEGER, description: "",
+                                              full_size_image: chooseFullsize, target: chooseId, title: chooseSelection, content: ""
+                                             })
                         if (attributeName.endsWith('_mc_xii_optional')) {
                             const noId = "no"
                             const noSelection = `No ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
-                            attribute.items.push({id: noId, selection: noSelection, thumbnail: noneImage, price: 0,
-                                                  quantity: Number.MAX_SAFE_INTEGER, description: "", full_size_image: noneFullsize,
-                                                  target: noId, title: noSelection, content: ""})
+                            attribute.items.push({attribute: attributeName, id: noId, selection: noSelection, thumbnail: noneImage,
+                                                  price: 0, quantity: Number.MAX_SAFE_INTEGER, description: "",
+                                                  full_size_image: noneFullsize, target: noId, title: noSelection, content: ""})
                         }
                     }
                     attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
