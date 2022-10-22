@@ -507,7 +507,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 
         const product = {
             id: 0,
-            attributes: []
+            attributes: [],
+            selectedVariation: null
         }
 
         const prevData = new Map()
@@ -623,6 +624,11 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const getVariationUrl = base + '/?wc-ajax=get_variation'
             const response = await fetch(getVariationUrl, {method: 'POST', body: body})
             console.log("getVariation():response=", response)
+            if (response.ok) {
+                const json = await response.json()
+                console.log("getVariation():json=", json)
+                product.selectedVariation = json
+            }
         }
 
         const query = new URLSearchParams(window.location.search)
