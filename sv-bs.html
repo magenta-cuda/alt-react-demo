@@ -482,7 +482,12 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container = jQuery(
 `<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;">
     <div style=" border:3px solid green;">
-Variation ID: <span>ZZZZZ</span>
+        Variation ID: <span class="id">ZZZZZ</span>
+        <br>
+        <span class="desc">ZZZZZ</span>
+        <br>
+        <span class="price">ZZZZZ</span>
+        <span class="stock">ZZZZZ</span>
     </div>
 </div>`
                 )
@@ -491,7 +496,10 @@ Variation ID: <span>ZZZZZ</span>
                 return null
             }
             prevData.set(id, data)
-            $container.find("span").text(data.variation_id)
+            $container.find("span.id").text(data.variation_id)
+            $container.find("span.desc").html(data.variation_description)
+            $container.find("span.price").html(data.price_html)
+            $container.find("span.stock").html(data.availability_html)
             return exists ? null : $container
         }
 
