@@ -486,8 +486,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         <br>
         <span class="desc">ZZZZZ</span>
         <br>
-        <span class="price">ZZZZZ</span>
-        <span class="stock">ZZZZZ</span>
+        <span class="price">ZZZZZ</span>,&nbsp;&nbsp;&nbsp;<span class="stock">ZZZZZ</span>
     </div>
 </div>`
                 )
@@ -498,8 +497,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             prevData.set(id, data)
             $container.find("span.id").text(data.variation_id)
             $container.find("span.desc").html(data.variation_description)
-            $container.find("span.price").html(data.price_html)
-            $container.find("span.stock").html(data.availability_html)
+            $container.find("span.price").html(data.price_html.replace(/<\/?span.*?>/, ""))
+            $container.find("span.stock").html(data.availability_html.replace(/<\/?p.*?>/, ""))
             return exists ? null : $container
         }
 
@@ -537,7 +536,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         const product = {
             id: 0,
             attributes: [],
-            selectedVariation: {}
+            selectedVariation: {availability_html: "", price_html: ""}
         }
 
         const prevData = new Map()
