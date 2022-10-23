@@ -472,8 +472,29 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container.append(item)
             }
             return exists ? null : $container
-         }
-        
+        }
+
+        function selectedVariationContainer(data, productId = "") {
+            const id = `selected-variation${productId ? "-" + productId : ""}`
+            let $container = jQuery(`#${id}`)
+            const exists = $container.length > 0
+            if (!exists) {
+                $container = jQuery(
+`<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;">
+    <div style=" border:3px solid green;">
+Variation ID: <span>ZZZZZ</span>
+    </div>
+</div>`
+                )
+            }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            $container.find("span").text(data.variation_id)
+            return exists ? null : $container
+        }
+
         let choosersData = [
             {
                 name: "alpha",
@@ -508,12 +529,12 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         const product = {
             id: 0,
             attributes: [],
-            selectedVariation: null
+            selectedVariation: {}
         }
 
         const prevData = new Map()
         jQuery("#nav-root").append(choosersSelectorsContainer(choosersData))
-        
+
         document.addEventListener("click", e => {console.log("click: ", e)}, true)
         document.addEventListener("shown.bs.tab", e => {
             console.log("document::shown.bs.tab:e=", e)
@@ -611,8 +632,12 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 product.id = productId
                 product.attributes = attributes
                 console.log("product=", product)
-                const $container = choosersSelectorsContainer(product.attributes, productId)
-                if ($container) {
+                let $container
+                if ($container = choosersSelectorsContainer(product.attributes, productId)) {
+                    jQuery("#nav-root").append($container)
+                    addEventListeners($container)
+                }
+                if ($container = selectedVariationContainer(product.selectedVariation, product.id)) {
                     jQuery("#nav-root").append($container)
                     addEventListeners($container)
                 }
@@ -628,6 +653,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 const json = await response.json()
                 console.log("getVariation():json=", json)
                 product.selectedVariation = json
+                selectedVariationContainer(product.selectedVariation, product.id)
             }
         }
 
