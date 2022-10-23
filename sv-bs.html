@@ -502,6 +502,28 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
+        function theContainer(data, id = "") {
+            const containerId = `the-container${id ? "-" + id : ""}`
+            let $container = jQuery(`#${containerId}`)
+            const exists = $container.length > 0
+            if (!exists) {
+                $container = jQuery(`<div id="${containerId}" />`)
+            }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            let $item
+            if ($item = choosersSelectorsContainer(data.attributes, id)) {
+                $container.append($item)
+                addEventListeners($item)
+            }
+            if ($item = selectedVariationContainer(data.selectedVariation, id)) {
+                $container.append($item)
+            }
+            return exists ? null : $container
+        }
+
         let choosersData = [
             {
                 name: "alpha",
@@ -639,14 +661,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 product.id = productId
                 product.attributes = attributes
                 console.log("product=", product)
-                let $container
-                if ($container = choosersSelectorsContainer(product.attributes, productId)) {
+                const $container = theContainer(product, productId);
+                if ($container) {
                     jQuery("#nav-root").append($container)
-                    addEventListeners($container)
-                }
-                if ($container = selectedVariationContainer(product.selectedVariation, product.id)) {
-                    jQuery("#nav-root").append($container)
-                    addEventListeners($container)
                 }
             }
         }
