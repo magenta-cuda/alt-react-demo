@@ -647,13 +647,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     }
                     attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
                 }
-                product.id = productId
-                product.attributes = attributes
-                console.log("product=", product)
-                const $container = theContainer(product, productId);
-                if ($container) {
-                    jQuery("#nav-root").append($container)
-                }
+                reducer("set-variations", {id: productId, attributes})
             }
         }
 
@@ -671,14 +665,23 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 
         function reducer(action, parms) {
             switch (action) {
-            case 'set-attribute-selection':
+            case "set-variations":
+                product.id = parms.id
+                product.attributes = parms.attributes
+                console.log("product=", product)
+                const $container = theContainer(product, productId);
+                if ($container) {
+                    jQuery("#nav-root").append($container)
+                }
+                break
+            case "set-attribute-selection":
                 const attributes = [...product.attributes]
                 const i = attributes.findIndex(x => x.name === parms.attributeName)
                 attributes[i] = {...attributes[i], selected: parms.attributeValue}
                 product.attributes = attributes
                 choosersSelectorsContainer(product.attributes, product.id)
                 break
-            case 'set-selected-variation':
+            case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
                 break
