@@ -598,14 +598,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 console.log("document::shown.bs.tab:e=", e)
                 const keys = e.target.dataset.target.match(/#pills-(\w+)-(\w+)/)
                 console.log("keys=", keys)
-                const tab = document.getElementById(e.target.dataset.target.substring(1))
-                console.log("tab=", tab)
-                // jQuery(`#selector-${keys[1]}`).val(`${keys[1]}-${keys[2]}`)
-                const attributes = [...product.attributes]
-                const i = attributes.findIndex(x => x.name === keys[1])
-                attributes[i] = {...attributes[i], selected: keys[2]}
-                product.attributes = attributes
-                choosersSelectorsContainer(product.attributes, product.id)
+                reducer("set-attribute-selection", {attributeName: keys[1], attributeValue: keys[2]})
             })
             $container.on("change", "select.form-select", e => {
                 console.log("select.form-select:e=", e)
@@ -613,11 +606,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 console.log("select.form-select:targetVal=", targetVal)
                 const keys = jQuery(e.target).val().match(/(\w+)-(\w+)/)
                 console.log("keys=", keys)
-                const attributes = [...product.attributes]
-                const i = attributes.findIndex(x => x.name === keys[1])
-                attributes[i] = {...attributes[i], selected: keys[2]}
-                product.attributes = attributes
-                choosersSelectorsContainer(product.attributes, product.id)
+                reducer("set-attribute-selection", {attributeName: keys[1], attributeValue: keys[2]})
             })
         }
 
@@ -676,8 +665,25 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if (response.ok) {
                 const json = await response.json()
                 console.log("getVariation():json=", json)
-                product.selectedVariation = json
+                reducer("set-selected-variation", json)
+            }
+        }
+
+        function reducer(action, parms) {
+            switch (action) {
+            case 'set-attribute-selection':
+                const attributes = [...product.attributes]
+                const i = attributes.findIndex(x => x.name === parms.attributeName)
+                attributes[i] = {...attributes[i], selected: parms.attributeValue}
+                product.attributes = attributes
+                choosersSelectorsContainer(product.attributes, product.id)
+                break
+            case 'set-selected-variation':
+                product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
+                break
+            default:
+                break
             }
         }
 
