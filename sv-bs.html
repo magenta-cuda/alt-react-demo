@@ -509,9 +509,14 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if (!exists) {
                 $container = jQuery(
 `<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;">
-    <div style=" border:3px solid blue;">
+    <div class="row" style=" border:3px solid blue; margin-left: 0; margin-right: 0; box-sizing: border-box;">
         <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right"></div>
-        X <span class="variation-price" /> = <span class="order-item-price" />
+        <div class="col-sm-10">
+            <div>
+                X <span class="variation-price"></span>
+                = <span class="order-item-price"></span>
+            </div>
+        </div>
     </div>
 </div>`
                 )
@@ -523,6 +528,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             prevData.set(id, data)
             $container.find("input").val(data.orderItemQuantity)
             $container.find("span.variation-price").html(data.selectedVariation.price_html.replace(/<(\/)?span.*?>/g, ""))
+            $container.find("span.order-item-price")
+                    .text(`${(data.orderItemQuantity * Number(data.selectedVariation.display_price)).toFixed(2)}`)
             return exists ? null : $container
         }
 
@@ -545,6 +552,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if ($item = selectedVariationContainer(data.selectedVariation, id)) {
                 $container.append($item)
             }
+            // TODO: immutability is wrong!
             if ($item = orderItemContainer({selectedVariation: data.selectedVariation, orderItemQuantity: data.orderItemQuantity}, id)) {
                 $container.append($item)
             }
@@ -712,10 +720,12 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
+                // TODO: immutability is wrong!
                 orderItemContainer({selectedVariation: product.selectedVariation, orderItemQuantity: product.orderItemQuantity}, product.id)
                 break
             case "set-order-item-quantity":
                 product.orderItemQuantity = parms
+                // TODO: immutability is wrong!
                 orderItemContainer({selectedVariation: product.selectedVariation, orderItemQuantity: product.orderItemQuantity}, product.id)
                 break
             default:
