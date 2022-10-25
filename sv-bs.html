@@ -502,7 +502,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
-        function orderItemContainer(data, productId) {
+        function orderItemContainer(dataSelectedVariation, dataOrderItemQuantity, productId) {
             const id = `order-item${productId ? "-" + productId : ""}`
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
@@ -522,14 +522,23 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 )
                 $container.find("input").change(function(e) {reducer("set-order-item-quantity", jQuery(this).val())})
             }
-            if (data === prevData.get(id)) {
+            const idSelectedVariation = `${id}-selected-variation`
+            const dataSelectedVariationChanged = dataSelectedVariation !== prevData.get(idSelectedVariation)
+            if (dataSelectedVariationChanged) {
+                prevData.set(idSelectedVariation, dataSelectedVariation)
+            }
+            const idOrderItemQuantity = `${id}-order-item-quantity`
+            const dataOrderItemQuantityChanged = dataOrderItemQuantity !== prevData.get(idOrderItemQuantity)
+            if (dataOrderItemQuantityChanged) {
+                prevData.set(idOrderItemQuantity, dataOrderItemQuantity)
+            }
+            if (!dataSelectedVariationChanged && !dataOrderItemQuantityChanged) {
                 return null
             }
-            prevData.set(id, data)
-            $container.find("input").val(data.orderItemQuantity)
-            $container.find("span.variation-price").html(data.selectedVariation.price_html.replace(/<(\/)?span.*?>/g, ""))
+            $container.find("input").val(dataOrderItemQuantity)
+            $container.find("span.variation-price").html(dataSelectedVariation.price_html.replace(/<(\/)?span.*?>/g, ""))
             $container.find("span.order-item-price")
-                    .text(`$${(data.orderItemQuantity * Number(data.selectedVariation.display_price)).toFixed(2)}`)
+                    .text(`$${(dataOrderItemQuantity * Number(dataSelectedVariation.display_price)).toFixed(2)}`)
             return exists ? null : $container
         }
 
@@ -552,8 +561,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if ($item = selectedVariationContainer(data.selectedVariation, id)) {
                 $container.append($item)
             }
-            // TODO: immutability is wrong!
-            if ($item = orderItemContainer({selectedVariation: data.selectedVariation, orderItemQuantity: data.orderItemQuantity}, id)) {
+            if ($item = orderItemContainer(data.selectedVariation, data.orderItemQuantity, id)) {
                 $container.append($item)
             }
             return exists ? null : $container
@@ -720,13 +728,11 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
-                // TODO: immutability is wrong!
-                orderItemContainer({selectedVariation: product.selectedVariation, orderItemQuantity: product.orderItemQuantity}, product.id)
+                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.id)
                 break
             case "set-order-item-quantity":
                 product.orderItemQuantity = parms
-                // TODO: immutability is wrong!
-                orderItemContainer({selectedVariation: product.selectedVariation, orderItemQuantity: product.orderItemQuantity}, product.id)
+                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.id)
                 break
             default:
                 break
