@@ -510,11 +510,17 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container = jQuery(
 `<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;">
     <div style=" border:3px solid blue;">
-        <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right" value="1"></div>
+        <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right"></div>
     </div>
 </div>`
                 )
+                $container.find("input").change(function(e) {reducer("set-order-item-quantity", jQuery(this).val())})
             }
+            if (data === prevData.get(id)) {
+                return null
+            }
+            prevData.set(id, data)
+            $container.find("input").val(data.orderItemQuantity)
             return exists ? null : $container
         }
 
@@ -537,7 +543,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if ($item = selectedVariationContainer(data.selectedVariation, id)) {
                 $container.append($item)
             }
-            if ($item = orderItemContainer(data.selectedVariation, id)) {
+            if ($item = orderItemContainer({selectedVariation: data.selectedVariation, orderItemQuantity: data.orderItemQuantity}, id)) {
                 $container.append($item)
             }
             return exists ? null : $container
@@ -577,7 +583,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         const product = {
             id: 0,
             attributes: [],
-            selectedVariation: {availability_html: "", price_html: ""}
+            selectedVariation: {availability_html: "", price_html: ""},
+            orderItemQuantity: 1
         }
 
         const prevData = new Map()
@@ -703,7 +710,11 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
-                orderItemContainer(product.selectedVariation, product.id)
+                orderItemContainer({selectedVariation: data.selectedVariation, orderItemQuantity: data.orderItemQuantity}, product.id)
+                break
+            case "set-order-item-quantity":
+                product.orderItemQuantity = parms
+                orderItemContainer({selectedVariation: product.selectedVariation, orderItemQuantity: product.orderItemQuantity}, product.id)
                 break
             default:
                 break
