@@ -497,8 +497,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             prevData.set(id, data)
             $container.find("span.id").text(data.variation_id)
             $container.find("span.desc").html(data.variation_description)
-            $container.find("span.price").html(data.price_html.replace(/<\/?span.*?>/, ""))
-            $container.find("span.stock").html(data.availability_html.replace(/<\/?p.*?>/, ""))
+            $container.find("span.price").html(data.price_html.replace(/<(\/)?span.*?>/g, ""))
+            $container.find("span.stock").html(data.availability_html.replace(/<(\/)?p.*?>/g, ""))
             return exists ? null : $container
         }
 
@@ -511,6 +511,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 `<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;">
     <div style=" border:3px solid blue;">
         <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right"></div>
+        X <span class="variation-price" /> = <span class="order-item-price" />
     </div>
 </div>`
                 )
@@ -521,6 +522,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             }
             prevData.set(id, data)
             $container.find("input").val(data.orderItemQuantity)
+            $container.find("span.variation-price").html(data.selectedVariation.price_html.replace(/<(\/)?span.*?>/g, ""))
             return exists ? null : $container
         }
 
@@ -710,7 +712,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
-                orderItemContainer({selectedVariation: data.selectedVariation, orderItemQuantity: data.orderItemQuantity}, product.id)
+                orderItemContainer({selectedVariation: product.selectedVariation, orderItemQuantity: product.orderItemQuantity}, product.id)
                 break
             case "set-order-item-quantity":
                 product.orderItemQuantity = parms
