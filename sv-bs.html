@@ -502,6 +502,22 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
+        function orderItemContainer(data, productId) {
+            const id = `order-item${productId ? "-" + productId : ""}`
+            let $container = jQuery(`#${id}`)
+            const exists = $container.length > 0
+            if (!exists) {
+                $container = jQuery(
+`<div id="${id}" style="display: grid; grid-template-columns: 50% 50%;">
+    <div style=" border:3px solid blue;">
+        <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right" value="1"></div>
+    </div>
+</div>`
+                )
+            }
+            return exists ? null : $container
+        }
+
         function theContainer(data, id = "") {
             const containerId = `the-container${id ? "-" + id : ""}`
             let $container = jQuery(`#${containerId}`)
@@ -519,6 +535,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 addEventListeners($item)
             }
             if ($item = selectedVariationContainer(data.selectedVariation, id)) {
+                $container.append($item)
+            }
+            if ($item = orderItemContainer(data.selectedVariation, id)) {
                 $container.append($item)
             }
             return exists ? null : $container
@@ -684,6 +703,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
+                orderItemContainer(product.selectedVariation, product.id)
                 break
             default:
                 break
