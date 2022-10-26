@@ -503,6 +503,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         }
 
         function orderItemContainer(dataSelectedVariation, dataOrderItemQuantity, productId) {
+            orderItemContainer.dataSelectedVariation = dataSelectedVariation
+            orderItemContainer.dataOrderItemQuantity = dataOrderItemQuantity
             const id = `order-item${productId ? "-" + productId : ""}`
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
@@ -515,12 +517,17 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             <div>
                 X <span class="variation-price"></span>
                 = <span class="order-item-price"></span>
+                <button type="button" class="btn btn-primary">Add to Cart</button>
             </div>
         </div>
     </div>
 </div>`
                 )
                 $container.find("input").change(function(e) {reducer("set-order-item-quantity", jQuery(this).val())})
+                $container.find("button").click(function(e) {
+                    // N.B. Cannot use dataSelectedVariation and orderItemContainer because they will be bound to the wrong closure!
+                    addToCart(orderItemContainer.dataSelectedVariation.variation_id, orderItemContainer.dataOrderItemQuantity)
+                })
             }
             const idSelectedVariation = `${id}-selected-variation`
             const dataSelectedVariationChanged = dataSelectedVariation !== prevData.get(idSelectedVariation)
@@ -705,6 +712,16 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 console.log("getVariation():json=", json)
                 reducer("set-selected-variation", json)
             }
+        }
+
+        async function addToCart(variationId, quantity) {
+            const base = window.location.origin
+            const url  = base + '/?wc-ajax=add_to_cart'
+            const body = new FormData()
+            body.append('product_id', variationId)
+            body.append('quantity', quantity)
+            const response = await fetch(url, {method: "POST", body})
+            console.log("addToCart():response=", response)
         }
 
         function reducer(action, parms) {
