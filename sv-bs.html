@@ -722,6 +722,11 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             body.append('quantity', quantity)
             const response = await fetch(url, {method: "POST", body})
             console.log("addToCart():response=", response)
+            if (response.ok) {
+                window.alert(`${quantity} items of product ${variationId} added to cart`)
+            } else {
+                window.alert(`add to cart failed: TODO:`)
+            }
         }
 
         function reducer(action, parms) {
