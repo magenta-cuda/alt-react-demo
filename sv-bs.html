@@ -503,6 +503,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         }
 
         function orderItemContainer(dataSelectedVariation, dataOrderItemQuantity, productId) {
+            const base = window.location.origin
+            const cart = base + "/index.php/cart/"
             orderItemContainer.dataSelectedVariation = dataSelectedVariation
             orderItemContainer.dataOrderItemQuantity = dataOrderItemQuantity
             const id = `order-item${productId ? "-" + productId : ""}`
@@ -518,6 +520,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 X <span class="variation-price"></span>
                 = <span class="order-item-price"></span>
                 <button type="button" class="btn btn-primary">Add to Cart</button>
+                <a class="btn btn-primary" href="${cart}" role="button">View Cart</a>
+
             </div>
         </div>
     </div>
