@@ -518,37 +518,6 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
-        let choosersData = [
-            {
-                name: "alpha",
-                columns: 3,
-                items:   [{target: 'aaaaa', title: 'aaa', content: 'AAAAAAA'},
-                          {target: 'bbbbb', title: 'bbb', content: 'BBBBBBB'},
-                          {target: 'ccccc', title: 'ccc', content: 'CCCCCCC'},
-                          {target: 'ddddd', title: 'ddd', content: 'DDDDDDD'},
-                          {target: 'eeeee', title: 'eee', content: 'EEEEEEE'},
-                          {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
-                selected: 'aaaaa'
-            },
-            {
-                name: "beta",
-                columns: 3,
-                items:   [{target: 'aaaaa', title: 'aaa', content: 'AAAAAAA'},
-                          {target: 'ccccc', title: 'ccc', content: 'CCCCCCC'},
-                          {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
-                selected: 'ccccc'
-            },
-            {
-                name: "gamma",
-                columns: 3,
-                items:   [{target: 'aaaaa', title: 'aaa', content: 'AAAAAAA'},
-                          {target: 'bbbbb', title: 'bbb', content: 'BBBBBBB'},
-                          {target: 'ccccc', title: 'ccc', content: 'CCCCCCC'},
-                          {target: 'fffff', title: 'fff', content: 'FFFFFFF'}],
-                selected: 'fffff'
-            }
-        ]
-
         const product = {
             id: 0,
             attributes: [],
@@ -557,36 +526,6 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         }
 
         const prevData = new Map()
-        jQuery("#nav-root").append(choosersSelectorsContainer(choosersData))
-
-        document.addEventListener("click", e => {console.log("click: ", e)}, true)
-        document.addEventListener("shown.bs.tab", e => {
-            console.log("document::shown.bs.tab:e=", e)
-            const keys = e.target.dataset.target.match(/#pills-(\w+)-(\w+)/)
-            console.log("keys=", keys)
-            const tab = document.getElementById(e.target.dataset.target.substring(1))
-            console.log("tab=", tab)
-            // jQuery(`#selector-${keys[1]}`).val(`${keys[1]}-${keys[2]}`)
-            choosersData = [...choosersData]
-            const i = choosersData.findIndex(x => x.name === keys[1])
-            choosersData[i] = {...choosersData[i], selected: keys[2]}
-            choosersSelectorsContainer(choosersData)
-        })
-        jQuery("button.nav-link").on("shown.bs.tab", e => {
-            console.log("jQuery::shown.bs.tab:e=", e)            
-        })
-        jQuery("select.form-select").on("change", e => {
-            console.log("select.form-select:e=", e)   
-            const targetVal = jQuery(e.target).val()         
-            console.log("select.form-select:targetVal=", targetVal)
-            const keys = jQuery(e.target).val().match(/(\w+)-(\w+)/)
-            console.log("keys=", keys)
-            // jQuery(`#pills-${keys[1]}-${keys[2]}-tab`).click()
-            choosersData = [...choosersData]
-            const i = choosersData.findIndex(x => x.name === keys[1])
-            choosersData[i] = {...choosersData[i], selected: keys[2]}
-            choosersSelectorsContainer(choosersData)
-        })
 
         function addEventListeners($container) {
             $container.on("shown.bs.tab", e => {
