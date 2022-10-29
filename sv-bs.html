@@ -11,69 +11,10 @@
     <title>SV Bootstrap Front End</title>
   </head>
   <body>
-      
-<div class="tab-content" id="pills-tabContent" style="width: 225px; height:225px; border: 3px solid red; box-sizing: border-box;">
-  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">HOME</div>
-  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">PROFILE</div>
-  <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">CONTACT</div>
-</div>
-      
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="display: grid; grid: auto-flow / repeat(3, 1fr); width: 225px; border: 3px solid blue; box-sizing: border-box; overflow: hidden;">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Profile</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-  </li>
-</ul>
-
-    <div id="tab-root"></div>
     <div id="nav-root"></div>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-        function createTabPane(data) {
-            return jQuery(`
-<div class="tab-pane fade" id="pills-${data.target}" role="tabpanel" aria-labelledby="pills-${data.target}-tab">
-The content of ${data.content}.
-</div>
-`                        )
-        }
-
-        function changeToGrid(container, columns) {
-            container.css({display: "grid", grid: `auto-flow / repeat(${columns}, 1fr)`})
-        }
-    
-        function createNavItem(data) {
-            return jQuery(`
-<li class="nav-item" role="presentation">
-    <button class="nav-link" id="pills-${data.target}-tab" data-bs-toggle="pill" data-bs-target="#pills-${data.target}" type="button"
-            role="tab" aria-controls="pills-${data.target}" aria-selected="false">
-        ${data.title}
-    </button>
-</li>
-`                        )
-        }
-        
-        const data = [{target: 'aaaaaaa', title: 'aaa', content: 'AAAAA'},
-                      {target: 'bbbbbbb', title: 'bbb', content: 'BBBBB'},
-                      {target: 'bbccccc', title: 'ccc', content: 'CCCCC'}]
-
-        function doTabs(tabsId, navsId, data) {
-            const tabs = jQuery(tabsId)
-            const navs = jQuery(navsId)
-            changeToGrid(navs, 2)
-            data.forEach(datum => {
-                tabs.append(createTabPane(datum))
-                navs.append(createNavItem(datum))
-            })
-        }
-
-        doTabs("#pills-tabContent", "#pills-tab", data)
-
         function doChildren($parent, children) {
             children.forEach(x => {
                 if (!Array.isArray(x.data)) {
