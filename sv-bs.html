@@ -600,6 +600,9 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 if (response.ok) {
                     const json = await response.json()
                     console.log("getVariation():json=", json)
+                    if (!json) {
+                        throw new Error("Variation not found")
+                    }
                     reducer("set-selected-variation", json)
                 } else {
                     alert("get variation failed: TODO:")
