@@ -621,11 +621,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             try {
                 const response = await fetch(url, {method: "POST", body})
                 console.log("addToCart():response=", response)
-                if (response.ok) {
-                    window.alert(`${quantity} items of product ${variationId} added to cart`)
-                } else {
-                    alert("add to cart failed: TODO:")
+                if (!response.ok) {
+                    throw new Error("Add to cart failed")
                 }
+                const json = await response.json()
+                console.log("addToCart():json=", json)
+                if (json.error) {
+                    throw new Error("Add to cart failed")
+                }
+                window.alert(`${quantity} items of product ${variationId} added to cart`)
             } catch (e) {
                 alert(e)
             }
