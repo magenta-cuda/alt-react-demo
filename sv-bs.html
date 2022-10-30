@@ -552,48 +552,60 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const noneImage = base + '/wp-content/uploads/2021/03/no-overlay-100x100.png'
             const noneFullsize = base + '/wp-content/uploads/2021/03/no-overlay.png'
             const url = `${loadVariations}&product_id=${productId}`
-            const response = await fetch(url)
-            if (response.ok) {
-                console.log("response=", response)
-                const json = await response.json()
-                console.log("json=", json)
-                const attributes = []
-                for (const id in json) {
-                    const variation = json[id]
-                    const attributeName = variation.attribute
-                    let attribute = attributes.find(x => x.name === attributeName)
-                    if (!attribute) {
-                        const chooseId = "choose"
-                        const chooseSelection = `Choose ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
-                        attribute = {name: attributeName, items: [], selected: chooseId, columns: 3}
-                        attributes.push(attribute)
-                        attribute.items.push({attribute: attributeName, id: chooseId, selection: chooseSelection,
-                                              thumbnail: chooseImage, price: 0, quantity: Number.MAX_SAFE_INTEGER, description: "",
-                                              full_size_image: chooseFullsize, target: chooseId, title: chooseSelection, content: ""
-                                             })
-                        if (attributeName.endsWith('_mc_xii_optional')) {
-                            const noId = "no"
-                            const noSelection = `No ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
-                            attribute.items.push({attribute: attributeName, id: noId, selection: noSelection, thumbnail: noneImage,
-                                                  price: 0, quantity: Number.MAX_SAFE_INTEGER, description: "",
-                                                  full_size_image: noneFullsize, target: noId, title: noSelection, content: ""})
+            try {
+                const response = await fetch(url)
+                if (response.ok) {
+                    console.log("response=", response)
+                    const json = await response.json()
+                    console.log("json=", json)
+                    const attributes = []
+                    for (const id in json) {
+                        const variation = json[id]
+                        const attributeName = variation.attribute
+                        let attribute = attributes.find(x => x.name === attributeName)
+                        if (!attribute) {
+                            const chooseId = "choose"
+                            const chooseSelection = `Choose ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
+                            attribute = {name: attributeName, items: [], selected: chooseId, columns: 3}
+                            attributes.push(attribute)
+                            attribute.items.push({attribute: attributeName, id: chooseId, selection: chooseSelection,
+                                                  thumbnail: chooseImage, price: 0, quantity: Number.MAX_SAFE_INTEGER, description: "",
+                                                  full_size_image: chooseFullsize, target: chooseId, title: chooseSelection, content: ""
+                                                 })
+                            if (attributeName.endsWith('_mc_xii_optional')) {
+                                const noId = "no"
+                                const noSelection = `No ${attributeName.replace('attribute_', '').replace('_mc_xii_optional', '')}`
+                                attribute.items.push({attribute: attributeName, id: noId, selection: noSelection, thumbnail: noneImage,
+                                                      price: 0, quantity: Number.MAX_SAFE_INTEGER, description: "",
+                                                      full_size_image: noneFullsize, target: noId, title: noSelection, content: ""})
+                            }
                         }
+                        attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
                     }
-                    attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
+                    reducer("set-variations", {id: productId, attributes})
+                } else {
+                    alert("load variations failed: TODO:")
                 }
-                reducer("set-variations", {id: productId, attributes})
+            } catch (e) {
+                alert(e)
             }
         }
 
         async function getVariation(body) {
             const base = window.location.origin
             const getVariationUrl = base + '/?wc-ajax=get_variation'
-            const response = await fetch(getVariationUrl, {method: 'POST', body: body})
-            console.log("getVariation():response=", response)
-            if (response.ok) {
-                const json = await response.json()
-                console.log("getVariation():json=", json)
-                reducer("set-selected-variation", json)
+            try {
+                const response = await fetch(getVariationUrl, {method: 'POST', body: body})
+                console.log("getVariation():response=", response)
+                if (response.ok) {
+                    const json = await response.json()
+                    console.log("getVariation():json=", json)
+                    reducer("set-selected-variation", json)
+                } else {
+                    alert("get variation failed: TODO:")
+                }
+            } catch (e) {
+                alert(e)
             }
         }
 
@@ -603,12 +615,16 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const body = new FormData()
             body.append('product_id', variationId)
             body.append('quantity', quantity)
-            const response = await fetch(url, {method: "POST", body})
-            console.log("addToCart():response=", response)
-            if (response.ok) {
-                window.alert(`${quantity} items of product ${variationId} added to cart`)
-            } else {
-                window.alert(`add to cart failed: TODO:`)
+            try {
+                const response = await fetch(url, {method: "POST", body})
+                console.log("addToCart():response=", response)
+                if (response.ok) {
+                    window.alert(`${quantity} items of product ${variationId} added to cart`)
+                } else {
+                    alert("add to cart failed: TODO:")
+                }
+            } catch (e) {
+                alert(e)
             }
         }
 
