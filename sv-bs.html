@@ -443,7 +443,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
-        function orderItemContainer(dataSelectedVariation, dataOrderItemQuantity, productId) {
+        function orderItemContainer(dataSelectedVariation, dataOrderItemQuantity, dataAddedToCart, productId) {
             const base = window.location.origin
             const cart = base + "/index.php/cart/"
             orderItemContainer.dataSelectedVariation = dataSelectedVariation
@@ -483,13 +483,20 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if (dataOrderItemQuantityChanged) {
                 prevData.set(idOrderItemQuantity, dataOrderItemQuantity)
             }
-            if (!dataSelectedVariationChanged && !dataOrderItemQuantityChanged) {
+            const idAddedToCart = `${id}-added-to-cart`
+            const dataAddedToCartChanged = dataAddedToCart !== prevData.get(idAddedToCart)
+            if (dataAddedToCartChanged) {
+                prevData.set(idAddedToCart, dataAddedToCart)
+            }
+            if (!dataSelectedVariationChanged && !dataOrderItemQuantityChanged && !dataAddedToCartChanged) {
                 return null
             }
             $container.find("input").val(dataOrderItemQuantity)
             $container.find("span.variation-price").html(dataSelectedVariation.price_html.replace(/<(\/)?span.*?>/g, ""))
             $container.find("span.order-item-price")
                     .text(`$${(dataOrderItemQuantity * Number(dataSelectedVariation.display_price)).toFixed(2)}`)
+            $container.find(`a[href="${cart}"]`).removeClass(dataAddedToCart ? "invisible" : "visible")
+                                                .addClass(dataAddedToCart ? "visible" : "invisible")
             return exists ? null : $container
         }
 
@@ -512,7 +519,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if ($item = selectedVariationContainer(data.selectedVariation, id)) {
                 $container.append($item)
             }
-            if ($item = orderItemContainer(data.selectedVariation, data.orderItemQuantity, id)) {
+            if ($item = orderItemContainer(data.selectedVariation, data.orderItemQuantity, data.addedToCart, id)) {
                 $container.append($item)
             }
             return exists ? null : $container
@@ -522,7 +529,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             id: 0,
             attributes: [],
             selectedVariation: {availability_html: "", price_html: ""},
-            orderItemQuantity: 1
+            orderItemQuantity: 1,
+            addedToCart: 0
         }
 
         const prevData = new Map()
@@ -629,13 +637,14 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 if (json.error) {
                     throw new Error("Add to cart failed")
                 }
+                reducer("add-to-cart")
                 window.alert(`${quantity} items of product ${variationId} added to cart`)
             } catch (e) {
                 alert(e)
             }
         }
 
-        function reducer(action, parms) {
+        function reducer(action, parms = null) {
             switch (action) {
             case "set-variations":
                 product.id = parms.id
@@ -656,11 +665,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             case "set-selected-variation":
                 product.selectedVariation = parms
                 selectedVariationContainer(product.selectedVariation, product.id)
-                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.id)
+                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
                 break
             case "set-order-item-quantity":
                 product.orderItemQuantity = parms
-                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.id)
+                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                break
+            case "add-to-cart":
+                ++product.addedToCart
+                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
                 break
             default:
                 break
