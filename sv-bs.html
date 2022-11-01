@@ -639,7 +639,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     throw new Error("Add to cart failed")
                 }
                 reducer("add-to-cart")
-                window.alert(`${quantity} items of product ${variationId} added to cart`)
+                window.alert(`${quantity} item${quantity > 1 ? "s" : ""} of product ${variationId} added to cart.`)
             } catch (e) {
                 alert(e)
             }
