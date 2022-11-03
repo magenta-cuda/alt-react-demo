@@ -540,7 +540,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${containerId}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${containerId}" style="display: grid; grid-template-columns: 50% 50%;" />`)
+                $container = jQuery(`<div id="${containerId}" style="display: grid; grid-template-columns: 50% 50%; margin: 10px 30px;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
