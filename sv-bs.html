@@ -399,7 +399,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${id}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 25% 25% 25% 25%; border:2px solid cyan;" />`)
+                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 50% 50%; border:2px solid cyan;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
@@ -407,7 +407,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             prevData.set(id, data)
             let item
             if (item = choosersContainer(data, productId)) {
-                $container.append("<div />")
+                // $container.append("<div />")
                 $container.append(item)
             }
             if (item = selectorsContainer(data, productId)) {
@@ -422,8 +422,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(
-`<div id="${id}" style="display: grid; grid-template-columns: 25% 50% 25%;">
-    <div style=" border:3px solid green; grid-column-start: 2;">
+`<div id="${id}" style="display: grid; grid-template-columns: 100%;">
+    <div style=" border:3px solid green; grid-column-start: 1;">
         Variation ID: <span class="id">ZZZZZ</span>
         <br>
         <span class="desc">ZZZZZ</span>
@@ -454,8 +454,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             const exists = $container.length > 0
             if (!exists) {
                 $container = jQuery(
-`<div id="${id}" style="display: grid; grid-template-columns: 25% 50% 25%;">
-    <div class="row" style=" border:3px solid blue; margin-left: 0; margin-right: 0; box-sizing: border-box; grid-column-start: 2;">
+`<div id="${id}" style="display: grid; grid-template-columns: 100%;">
+    <div class="row" style=" border:3px solid blue; margin-left: 0; margin-right: 0; box-sizing: border-box; grid-column-start: 1;">
         <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right"></div>
         <div class="col-sm-10 mt-2">
             <div>
@@ -540,7 +540,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${containerId}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${containerId}" />`)
+                $container = jQuery(`<div id="${containerId}" style="display: grid; grid-template-columns: 50% 50%;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
