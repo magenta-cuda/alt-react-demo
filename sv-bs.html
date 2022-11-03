@@ -551,10 +551,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container.append($item)
                 addEventListeners($item)
             }
+/*
             if ($item = selectedVariationContainer(data.selectedVariation, id)) {
                 $container.append($item)
             }
             if ($item = orderItemContainer(data.selectedVariation, data.orderItemQuantity, data.addedToCart, id)) {
+                $container.append($item)
+            }
+ */
+            if ($item = selectedVariationOrderItemContainer(data.selectedVariation, data.orderItemQuantity, data.addedToCart, id)) {
                 $container.append($item)
             }
             return exists ? null : $container
@@ -699,16 +704,19 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 break
             case "set-selected-variation":
                 product.selectedVariation = parms
-                selectedVariationContainer(product.selectedVariation, product.id)
-                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                // selectedVariationContainer(product.selectedVariation, product.id)
+                // orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                selectedVariationOrderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
                 break
             case "set-order-item-quantity":
                 product.orderItemQuantity = parms
-                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                // orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                selectedVariationOrderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
                 break
             case "add-to-cart":
                 ++product.addedToCart
-                orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                // orderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
+                selectedVariationOrderItemContainer(product.selectedVariation, product.orderItemQuantity, product.addedToCart, product.id)
                 break
             default:
                 break
