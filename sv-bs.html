@@ -501,6 +501,40 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
+        function selectedVariationOrderItemContainer(dataSelectedVariation, dataOrderItemQuantity, dataAddedToCart, productId = "") {
+            const id = `selected-variation-order-item${productId ? "-" + productId : ""}`
+            let $container = jQuery(`#${id}`)
+            const exists = $container.length > 0
+            if (!exists) {
+                $container = jQuery(`<div id="${id}" style="display: grid; grid-template-columns: 100%; border:2px solid cyan;" />`)
+            }
+            const idSelectedVariation = `${id}-selected-variation`
+            const dataSelectedVariationChanged = dataSelectedVariation !== prevData.get(idSelectedVariation)
+            if (dataSelectedVariationChanged) {
+                prevData.set(idSelectedVariation, dataSelectedVariation)
+            }
+            const idOrderItemQuantity = `${id}-order-item-quantity`
+            const dataOrderItemQuantityChanged = dataOrderItemQuantity !== prevData.get(idOrderItemQuantity)
+            if (dataOrderItemQuantityChanged) {
+                prevData.set(idOrderItemQuantity, dataOrderItemQuantity)
+            }
+            const idAddedToCart = `${id}-added-to-cart`
+            const dataAddedToCartChanged = dataAddedToCart !== prevData.get(idAddedToCart)
+            if (dataAddedToCartChanged) {
+                prevData.set(idAddedToCart, dataAddedToCart)
+            }
+            if (!dataSelectedVariationChanged && !dataOrderItemQuantityChanged && !dataAddedToCartChanged) {
+                return null
+            }
+            if ($item = selectedVariationContainer(dataSelectedVariation, id)) {
+                $container.append($item)
+            }
+            if ($item = orderItemContainer(dataSelectedVariation, dataOrderItemQuantity, dataAddedToCart, id)) {
+                $container.append($item)
+            }
+            return exists ? null : $container
+        }
+
         function theContainer(data, id = "") {
             const containerId = `the-container${id ? "-" + id : ""}`
             let $container = jQuery(`#${containerId}`)
