@@ -456,11 +456,15 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container = jQuery(
 `<div id="${id}" style="display: grid; grid-template-columns: 100%;">
     <div class="row" style=" border:3px solid blue; margin-left: 0; margin-right: 0; box-sizing: border-box; grid-column-start: 1;">
-        <div class="col-sm-2"><input type="number" class="form-control" style="text-align:right"></div>
-        <div class="col-sm-10 mt-2">
+        <div class="col-sm-3"><input type="number" class="form-control" style="text-align:right"></div>
+        <div class="col-sm-9 mt-2">
             <div>
                 X <span class="variation-price"></span>
                 = <span class="order-item-price"></span>
+            </div>
+        </div>
+        <div class="col-sm-12 mt-2">
+            <div>
                 <button type="button" class="btn btn-primary">Add to Cart</button>
                 <a class="btn btn-primary" href="${cart}" role="button" target="_blank">View Cart</a>
             </div>
