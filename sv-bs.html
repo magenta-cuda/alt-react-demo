@@ -365,7 +365,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 }
                 getVariation(body)
             } else {
-                reducer("set-selected-variation", {availability_html: "", price_html: ""})
+                setTimeout(() => reducer("set-selected-variation",
+                                         {variation_id: "", variation_description: "", price_html: "", availability_html: ""}))
             }
             $container.find("span.product-price").text(total.toFixed(2))
             $container.find("span.product-stock").text(stock)
@@ -574,7 +575,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
         const product = {
             id: 0,
             attributes: [],
-            selectedVariation: {availability_html: "", price_html: ""},
+            selectedVariation: {variation_id: "", variation_description: "", price_html: "", availability_html: ""},
             orderItemQuantity: 1,
             addedToCart: 0
         }
