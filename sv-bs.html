@@ -369,7 +369,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                                          {variation_id: "", variation_description: "", price_html: "", availability_html: ""}))
             }
             $container.find("span.product-price").text(total.toFixed(2))
-            $container.find("span.product-stock").text(stock)
+            $container.find("span.product-stock").text(stock !== Number.MAX_SAFE_INTEGER ? stock : 0)
             return exists ? null : $container
         }
 
@@ -500,7 +500,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 return null
             }
             $container.find("input").val(dataOrderItemQuantity)
-            $container.find("span.variation-price").html(dataSelectedVariation.price_html.replace(/<(\/)?span.*?>/g, ""))
+            const priceHtml = dataSelectedVariation.price_html.replace(/<(\/)?span.*?>/g, "")
+            $container.find("span.variation-price").html(priceHtml !== "" ? priceHtml : "$NaN")
             $container.find("span.order-item-price")
                     .text(`$${(dataOrderItemQuantity * Number(dataSelectedVariation.display_price)).toFixed(2)}`)
             $container.find(`a[href="${cart}"]`).removeClass(dataAddedToCart ? "invisible" : "visible")
