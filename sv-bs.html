@@ -243,7 +243,7 @@
                     $desc = jQuery(
 `<div class="tab-pane fade" id="${id}" role="tabpanel" aria-labelledby="description-${name}-${data.target}-tab"
         style="aspect-ratio: 6 / 1; color: #5f5f5f; font-size: 0.9rem; font-weight: bold;">
-<div style="margin: 0.5rem;">${data.description.replace(/^\w+:\s*/, "")}</div>
+<div class="m-3">${data.description.replace(/^\w+:\s*/, "")}</div>
 <div style="text-align: center; font-size: 1.1rem; margin-top: 0.5rem;">${data.price ? "Price: $" + data.price : ""}</div>
 </div>`
                     )
@@ -427,7 +427,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 $container = jQuery(
 `<div id="${id}" style="display: grid; grid-template-columns: 100%;">
     <div class="p-3" style=" border:3px solid green; grid-column-start: 1;">
-        <div class="fs-5 fw-bold">
+        <div class="fs-5 fw-bold text-center">
             Variation ID: <span class="id">ZZZZZ</span>
         </div>
         <div class="mt-2">
