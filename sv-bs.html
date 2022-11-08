@@ -317,12 +317,10 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             if (!exists) {
                 $container = jQuery(
 `<div id="${id}" style="border: 2px solid blue; box-sizing: border-box;">
-    <hr>
-    <div style="font-size: 1.1rem; font-weight: bold; text-align: center;">
+    <div class="m-3 fs-5 fw-bold text-center">
         Total Price: $<span class="product-price">0.00</span>,
         In Stock: <span class="product-stock">0.00</span>
     </div>
-    <hr>
 </div>`
                 )
             }
@@ -551,7 +549,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             let $container = jQuery(`#${containerId}`)
             const exists = $container.length > 0
             if (!exists) {
-                $container = jQuery(`<div id="${containerId}" style="display: grid; grid-template-columns: 65% 35%; margin: 10px 30px;" />`)
+                $container = jQuery(`<div id="${containerId}" class="my-3 mx-4" style="display: grid; grid-template-columns: 65% 35%;" />`)
             }
             if (data === prevData.get(id)) {
                 return null
