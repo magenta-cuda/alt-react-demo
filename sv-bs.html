@@ -734,7 +734,16 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
 
         const query = new URLSearchParams(window.location.search)
         const productId = query.get('product_id')
-        loadVariations(productId)
+        if (productId) {
+            loadVariations(productId)
+        } else {
+            const $alert = jQuery(
+`<div class="alert alert-danger" role="alert">
+    The "product_id" query parameter is missing!
+</div>`
+            )
+            jQuery("#nav-root").append($alert)
+        }
     </script>
   </body>
 </html>
