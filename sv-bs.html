@@ -639,12 +639,28 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                         }
                         attribute.items.push({...variation, target: variation.id, title: variation.selection, content: variation.description})
                     }
+                    if (!attributes.length) {
+                        const $alert = jQuery(
+`<div class="alert alert-warning" role="alert">
+    No components found! Is "${productId}" a valid "product_id" for a "Simple Variable" product?
+</div>`
+                        )
+                        jQuery("#nav-root").prepend($alert)
+                    }
                     reducer("set-variations", {id: productId, attributes})
                 } else {
                     alert("load variations failed: TODO:")
                 }
             } catch (e) {
-                alert(e)
+                const $alert = jQuery(
+`<div class="alert alert-danger" role="alert">
+    ${e}
+</div>
+<div class="alert alert-warning" role="alert">
+    No components found! Is "${productId}" a valid "product_id" for a "Simple Variable" product?
+</div>`
+                )
+                jQuery("#nav-root").prepend($alert)
             }
         }
 
