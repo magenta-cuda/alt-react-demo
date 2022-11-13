@@ -355,7 +355,7 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                     }
                 }
             })
-            if (bodyDone === data.length) {
+            if (data.length && bodyDone === data.length) {
                 body.append('product_id', productId)
                 console.log("productTotal():body=")
                 for (const pair of body.entries()) {
