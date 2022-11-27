@@ -10,4 +10,10 @@ There are some very significant advantages to a bespoke application versus an ap
 
 + Further, there will be conditions that will be true in your application that will not be true in other applications. These conditions will allow you to greatly simplify and greatly optimize your code. So a bespoke application will much easier to understand and also execute much faster.
 
-+ A bespoke application will be much closer to the metal. Since you wrote everything you will have direct access to all the Javascript code and all the Javascript objects. A bespoke application is much easier to understand and much easier to debug since everything is visible.
++ A bespoke application will be much closer to the metal. Since you wrote everything you will have direct access to all the Javascript code and all the Javascript objects. A bespoke application is much easier to understand and much easier to debug since everything is visible. Direct access to the code and objects means that it is much easier to modify to fix a problem or implement a special feature.
+
+There are some very significant disadvantages to a bespoke application versus an application built using a framework.
+
++ A framework makes many design decisions for you. In a bespoke application this is entirely you responsiblity. I.e., you must know what you are doing. Having said that the concepts of React and Redux are relatively easy to understand so these design decisions are not that difficult to make for a good programmer.
+
++ A framework enforces a programming discipline that prevents you from doing many bad programming practices. Again this becomes entirely your responsibility. You must understand when you should not take advantage of the direct access to code and objects in way that may cause problems later even if it solves the problem for now. This requires a mature programmer with good judgement.
