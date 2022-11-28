@@ -574,6 +574,22 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
             return exists ? null : $container
         }
 
+        function caption(id = "") {
+            const captionId = `caption${id ? "-" + id : ""}`
+            let $caption = jQuery(`#${captionId}`)
+            const exists = $caption.length > 0
+            if (!exists) {
+                const query = new URLSearchParams(window.location.search)
+                const productId = query.get('product_id')
+                $caption = jQuery(
+`<div id="${captionId}" class="text-center">
+This is a re-implementation of <a href="sv-rr/?product_id=${productId}">React Redux Buyer’s Demo Page</a> using only Javascript.
+</div>`
+                )
+            }
+            return exists ? null : $caption
+        }
+
         const product = {
             id: 0,
             attributes: [],
@@ -747,6 +763,8 @@ The content of id="${name}-${data.target}" from tab="${data.title}" is "${data.c
                 break
             }
         }
+
+        jQuery("#nav-root").append(caption())
 
         const query = new URLSearchParams(window.location.search)
         const productId = query.get('product_id')
