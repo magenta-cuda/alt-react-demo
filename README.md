@@ -14,6 +14,6 @@ This a re-implementation of [sv-rr](https://github.com/magenta-cuda/sv-rr) (whic
 
 **There are some very significant disadvantages to a bespoke application versus an application built using a framework.**
 
-+ A framework makes many design decisions for you. In a bespoke application this is entirely you responsiblity. I.e., you must know what you are doing. Having said that the concepts of React and Redux are relatively easy to understand so these design decisions are not that difficult to make for a good programmer.
++ A framework makes many design decisions for you. In a bespoke application this is entirely your responsiblity. I.e., you must know what you are doing. Having said that the concepts of React and Redux are relatively easy to understand so these design decisions are not that difficult to make for a good programmer.
 
 + A framework enforces a programming discipline that prevents you from doing many bad programming practices. Again this becomes entirely your responsibility. You must understand when you should not take advantage of the direct access to code and objects in way that may cause problems later even if it solves the problem for now. This requires a mature programmer with good judgement.
