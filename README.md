@@ -18,4 +18,4 @@ This a re-implementation of [sv-rr](https://github.com/magenta-cuda/sv-rr) (whic
 
 + A framework enforces a programming discipline that prevents you from doing many bad programming practices. Again this becomes entirely your responsibility. You must understand when you should not take advantage of the direct access to code and objects in way that may cause problems later even if it solves the problem for now. This requires a mature programmer with good judgement.
 
-+ There is no JSX. Instead components are implemented with Javascript functions that return DOM fragments. Of course these functions can be nested. I think a real programmer can infer the DOM structure from the nested function calls but it doesn't have the visual clarity that a HTML like language conveys.
++ There is no JSX. Instead of templates components are implemented with Javascript functions that return DOM fragments. Of course these functions can be nested. I think a real programmer can infer the DOM structure from the nested function calls but it doesn't have the visual clarity that a HTML like language conveys.
